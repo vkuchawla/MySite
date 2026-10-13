@@ -1,0 +1,130 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------------
+   "Golden Hour Set" — warm analog palette for a PM who's also a DJ/drummer.
+   Base is warm sand + espresso ink; the accent is a sunset gradient
+   (amber -> ember -> dusk plum) rather than a lone terracotta.
+--------------------------------------------------------------------------- */
+@theme inline {
+  --color-paper: #f5ece0;      /* warm sand base            */
+  --color-paper-deep: #ece0cf; /* deeper sand, alt sections */
+  --color-ink: #2a1e16;        /* espresso, near-black brown */
+  --color-ink-soft: #6f5d4e;   /* taupe body text           */
+  --color-ink-faint: #6e6256;  /* muted captions — AA: 4.55:1 on paper-deep */
+  --color-line: #2a1e1620;     /* hairline (12% ink)        */
+  --color-ember: #cf5a2c;      /* burnt amber — fills, large/bold, gradient */
+  --color-ember-text: #b24d26; /* ember for small text/links — AA: 4.51:1 on paper */
+  --color-gold: #e0a13c;       /* amber gold                */
+  --color-dusk: #7a3f63;       /* dusk plum (cool accent)   */
+
+  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
+  --font-display: var(--font-display), Georgia, serif;
+  --font-serif: var(--font-serif), Georgia, serif;
+  --font-mono: var(--font-mono), ui-monospace, monospace;
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #f5ece0;
+}
+
+body {
+  background: #f5ece0;
+  color: #2a1e16;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Faint film grain over everything — analog warmth, sits above bg, below content */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
+}
+
+/* Keep real content above the grain.
+   Must live in @layer base so Tailwind's layered utilities (e.g. `fixed`,
+   `z-50` on the nav) still win — an unlayered rule here would override them
+   and knock the fixed nav back into normal flow. */
+@layer base {
+  main,
+  nav,
+  footer {
+    position: relative;
+    z-index: 2;
+  }
+}
+
+::selection {
+  background: #cf5a2c;
+  color: #f5ece0;
+}
+
+/* Visible keyboard focus on custom pills/links (UA default gets lost on the
+   rounded, tinted surfaces). Layered so utilities can still override per-case. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--color-ember);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+}
+
+/* Sunset gradient helpers ------------------------------------------------- */
+.text-sunset {
+  background: linear-gradient(105deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.bg-sunset {
+  background: linear-gradient(105deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
+}
+.bg-sunset-v {
+  background: linear-gradient(180deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
+}
+
+/* Utility voices ---------------------------------------------------------- */
+.font-display { font-family: var(--font-display); }
+.font-serif { font-family: var(--font-serif); }
+.font-mono { font-family: var(--font-mono); }
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #a2907e;
+}
+
+/* Drum-hit click ripple */
+.ripple-ring {
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  margin-top: -6px;
+  border: 2px solid #cf5a2c;
+  animation: ripple 0.6s ease-out forwards;
+}
+@keyframes ripple {
+  from { transform: scale(0.4); opacity: 0.6; }
+  to { transform: scale(9); opacity: 0; }
+}
+
+/* Respect reduced motion — kill transforms/animations globally */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

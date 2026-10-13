@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.8 154">
+  <!-- Upper triangle left (bright red) -->
+  <polygon fill="#E31837" points="7.1,137.6 96.4,0 96.4,94.6"/>
+  <!-- Upper triangle right (dark red shadow) -->
+  <polygon fill="#98002E" points="185.7,137.6 96.4,94.6 96.4,0"/>
+  <!-- Lower chevron left (bright red) -->
+  <polygon fill="#E31837" points="0,154 96.4,154 96.4,113.3"/>
+  <!-- Lower chevron right (dark red shadow) -->
+  <polygon fill="#98002E" points="192.8,154 96.4,113.3 96.4,154"/>
+</svg>
