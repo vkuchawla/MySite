@@ -1,11 +1,17 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Vedant Chawla — Product Manager & Music Curator";
+export const alt = "Vedant Chawla — Product Manager";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Generated OG/social card, matching the site's "Golden Hour" palette.
+// Generated OG/social card, matching the site's "Measured" palette.
 export default function OpengraphImage() {
+  const specs = [
+    ["Percussion", "120 BPM"],
+    ["Systems", "$2B+"],
+    ["Fashion", "320 GSM"],
+    ["Coffee", "1:16"],
+  ];
   return new ImageResponse(
     (
       <div
@@ -15,10 +21,9 @@ export default function OpengraphImage() {
           display: "flex",
           flexDirection: "column",
           justifyContent: "space-between",
-          padding: "80px",
-          background:
-            "radial-gradient(120% 95% at 50% 30%, #241812 0%, #170f0a 58%, #120b07 100%)",
-          color: "#f5ece0",
+          padding: "72px",
+          background: "#16140f",
+          color: "#eceae4",
           fontFamily: "sans-serif",
         }}
       >
@@ -30,62 +35,40 @@ export default function OpengraphImage() {
             fontSize: 24,
             letterSpacing: 6,
             textTransform: "uppercase",
-            color: "#a2907e",
+            color: "#8c857a",
           }}
         >
-          <span>Atlanta, GA</span>
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: 8,
-              background: "#cf5a2c",
-              display: "flex",
-            }}
-          />
-          <span>Visible sound</span>
+          <span style={{ width: 40, height: 2, background: "#b4824a", display: "flex" }} />
+          <span>Portfolio · Product Manager</span>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 144,
-              fontWeight: 800,
-              lineHeight: 1,
-              letterSpacing: -4,
-            }}
-          >
-            <span>Vedant</span>
-            <span style={{ color: "#e0a13c", marginLeft: 28 }}>Chawla</span>
+          <div style={{ display: "flex", fontSize: 190, fontWeight: 800, lineHeight: 1, letterSpacing: -6 }}>
+            Measured.
           </div>
-          <div
-            style={{
-              display: "flex",
-              fontSize: 40,
-              marginTop: 30,
-              color: "rgba(245,236,224,0.8)",
-            }}
-          >
-            Product Manager &amp; Music Curator
+          <div style={{ display: "flex", fontSize: 38, marginTop: 28, color: "rgba(236,234,228,0.78)" }}>
+            A product manager who sweats the 2%.
           </div>
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-            fontSize: 26,
-            color: "#a2907e",
-          }}
-        >
-          <span>vedant-chawla.vercel.app</span>
-          <span style={{ display: "flex", gap: 10 }}>
-            <span style={{ width: 14, height: 14, borderRadius: 14, background: "#e0a13c", display: "flex" }} />
-            <span style={{ width: 14, height: 14, borderRadius: 14, background: "#cf5a2c", display: "flex" }} />
-            <span style={{ width: 14, height: 14, borderRadius: 14, background: "#7a3f63", display: "flex" }} />
-          </span>
+        <div style={{ display: "flex", justifyContent: "space-between", gap: 24 }}>
+          {specs.map(([k, v]) => (
+            <div
+              key={k}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                flex: 1,
+                borderTop: "1px solid rgba(236,234,228,0.14)",
+                paddingTop: 14,
+              }}
+            >
+              <span style={{ fontSize: 20, letterSpacing: 3, textTransform: "uppercase", color: "#8c857a" }}>
+                {k}
+              </span>
+              <span style={{ fontSize: 46, fontWeight: 700, color: "#d0a66e", marginTop: 6 }}>{v}</span>
+            </div>
+          ))}
         </div>
       </div>
     ),

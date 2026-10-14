@@ -1,130 +1,150 @@
 @import "tailwindcss";
 
-/* ---------------------------------------------------------------------------
-   "Golden Hour Set" — warm analog palette for a PM who's also a DJ/drummer.
-   Base is warm sand + espresso ink; the accent is a sunset gradient
-   (amber -> ember -> dusk plum) rather than a lone terracotta.
---------------------------------------------------------------------------- */
+/* ===========================================================================
+   "MEASURED" — a product manager who sweats the 2%, across four crafts.
+   The design is built like a precision instrument panel: porcelain + warm
+   graphite, a single burnished-brass accent, and a monospace "spec" voice that
+   renders percussion, systems, fashion and coffee in one measurement language.
+   =========================================================================== */
 @theme inline {
-  --color-paper: #f5ece0;      /* warm sand base            */
-  --color-paper-deep: #ece0cf; /* deeper sand, alt sections */
-  --color-ink: #2a1e16;        /* espresso, near-black brown */
-  --color-ink-soft: #6f5d4e;   /* taupe body text           */
-  --color-ink-faint: #6e6256;  /* muted captions — AA: 4.55:1 on paper-deep */
-  --color-line: #2a1e1620;     /* hairline (12% ink)        */
-  --color-ember: #cf5a2c;      /* burnt amber — fills, large/bold, gradient */
-  --color-ember-text: #b24d26; /* ember for small text/links — AA: 4.51:1 on paper */
-  --color-gold: #e0a13c;       /* amber gold                */
-  --color-dusk: #7a3f63;       /* dusk plum (cool accent)   */
+  /* Surfaces */
+  --color-porcelain: #eceae4;        /* light base            */
+  --color-porcelain-deep: #e3e0d8;   /* alt light section     */
+  --color-graphite: #16140f;         /* warm near-black       */
+  --color-graphite-soft: #211e17;    /* dark elevated         */
 
-  --font-sans: var(--font-geist-sans, ui-sans-serif, system-ui, sans-serif);
-  --font-display: var(--font-display), Georgia, serif;
-  --font-serif: var(--font-serif), Georgia, serif;
+  /* Ink (text) */
+  --color-ink: #16140f;              /* headlines on light    */
+  --color-ink-soft: #55514a;         /* body on light  ~7:1   */
+  --color-ink-faint: #6e675d;        /* captions on light ~4.8*/
+  --color-bone: #eceae4;             /* headlines on dark     */
+  --color-bone-soft: #bdb6a9;        /* body on dark          */
+  --color-bone-faint: #8c857a;       /* captions on dark      */
+
+  /* Accents */
+  --color-brass: #b4824a;            /* the one accent        */
+  --color-brass-bright: #d0a66e;     /* brass on dark / hover */
+  --color-brass-text: #926733;       /* brass small-text/light ~4.6 */
+  --color-indigo: #30405f;           /* cool secondary        */
+
+  /* Lines */
+  --color-hairline: #16140f1a;       /* 10% ink on light      */
+  --color-hairline-dark: #eceae419;  /* 10% bone on dark      */
+
+  --font-display: var(--font-display), "Georgia", serif;
+  --font-sans: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   --font-mono: var(--font-mono), ui-monospace, monospace;
 }
 
-html {
-  scroll-behavior: smooth;
-  background: #f5ece0;
-}
-
-body {
-  background: #f5ece0;
-  color: #2a1e16;
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-/* Faint film grain over everything — analog warmth, sits above bg, below content */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0.4;
-  mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.35'/%3E%3C/svg%3E");
-}
-
-/* Keep real content above the grain.
-   Must live in @layer base so Tailwind's layered utilities (e.g. `fixed`,
-   `z-50` on the nav) still win — an unlayered rule here would override them
-   and knock the fixed nav back into normal flow. */
 @layer base {
-  main,
-  nav,
-  footer {
-    position: relative;
-    z-index: 2;
+  html {
+    scroll-behavior: smooth;
+    background: var(--color-graphite);
   }
-}
-
-::selection {
-  background: #cf5a2c;
-  color: #f5ece0;
-}
-
-/* Visible keyboard focus on custom pills/links (UA default gets lost on the
-   rounded, tinted surfaces). Layered so utilities can still override per-case. */
-@layer base {
+  body {
+    background: var(--color-porcelain);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-brass);
+    color: #faf8f3;
+  }
   :focus-visible {
-    outline: 2px solid var(--color-ember);
-    outline-offset: 2px;
+    outline: 2px solid var(--color-brass);
+    outline-offset: 3px;
     border-radius: 2px;
   }
 }
 
-/* Sunset gradient helpers ------------------------------------------------- */
-.text-sunset {
-  background: linear-gradient(105deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-}
-.bg-sunset {
-  background: linear-gradient(105deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
-}
-.bg-sunset-v {
-  background: linear-gradient(180deg, #e0a13c 0%, #cf5a2c 48%, #7a3f63 100%);
-}
-
-/* Utility voices ---------------------------------------------------------- */
-.font-display { font-family: var(--font-display); }
-.font-serif { font-family: var(--font-serif); }
+/* --- Type voices ---------------------------------------------------------- */
+.font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; }
 .font-mono { font-family: var(--font-mono); }
 
+/* Monospace spec label — the connective voice across all four crafts. */
+.spec {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* Eyebrow / registration label */
 .eyebrow {
   font-family: var(--font-mono);
-  font-size: 0.7rem;
-  letter-spacing: 0.22em;
+  font-size: 0.68rem;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
-  color: #a2907e;
 }
 
-/* Drum-hit click ripple */
-.ripple-ring {
-  width: 12px;
-  height: 12px;
-  margin-left: -6px;
-  margin-top: -6px;
-  border: 2px solid #cf5a2c;
-  animation: ripple 0.6s ease-out forwards;
-}
-@keyframes ripple {
-  from { transform: scale(0.4); opacity: 0.6; }
-  to { transform: scale(9); opacity: 0; }
+/* Fluid display scale */
+.display-xl { font-size: clamp(3.4rem, 12vw, 11rem); line-height: 0.9; }
+.display-lg { font-size: clamp(2.6rem, 7vw, 6rem); line-height: 0.94; }
+.display-md { font-size: clamp(2rem, 4.2vw, 3.4rem); line-height: 1.02; }
+
+/* --- The measurement grid: faint instrument-panel backdrop ---------------- */
+.measure-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, currentColor 1px, transparent 1px),
+    linear-gradient(to bottom, currentColor 1px, transparent 1px);
+  background-size: clamp(44px, 7vw, 92px) clamp(44px, 7vw, 92px);
+  opacity: 0.05;
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 42%, #000 35%, transparent 100%);
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 42%, #000 35%, transparent 100%);
 }
 
-/* Respect reduced motion — kill transforms/animations globally */
+/* Registration tick (corner marks on panels) */
+.tick::before,
+.tick::after {
+  content: "";
+  position: absolute;
+  background: currentColor;
+  opacity: 0.4;
+}
+
+/* Brass underline that draws in on hover */
+.link-brass {
+  position: relative;
+  color: var(--color-brass-text);
+}
+.link-brass::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  height: 1px;
+  width: 100%;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.link-brass:hover::after { transform: scaleX(1); }
+
+/* Metronome pulse for the tempo rail playhead */
+@keyframes tempo-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.9); opacity: 0.35; }
+}
+.tempo-pulse { animation: tempo-pulse 1s steps(1, end) infinite; }
+
+/* Slow brass sheen sweep (hero signature) */
+@keyframes sheen {
+  0% { background-position: -150% 0; }
+  100% { background-position: 250% 0; }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
-    scroll-behavior: auto !important;
   }
 }

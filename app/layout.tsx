@@ -1,56 +1,45 @@
 import type { Metadata } from "next";
 import {
-  Geist,
   Bricolage_Grotesque,
-  Instrument_Serif,
-  Space_Mono,
+  Hanken_Grotesk,
+  Geist_Mono,
 } from "next/font/google";
 import "./globals.css";
 
-// Body — clean, neutral, lets the warm palette do the talking
-const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
-
-// Display — contemporary grotesque with real character (not the serif cliché)
+// Display — a characterful grotesque, set huge and tight.
 const display = Bricolage_Grotesque({
   subsets: ["latin"],
   variable: "--font-display",
 });
 
-// Accent — an editorial serif italic for eyebrows + human asides
-const serif = Instrument_Serif({
+// Body — a quiet, precise humanist sans.
+const sans = Hanken_Grotesk({
   subsets: ["latin"],
-  weight: "400",
-  style: ["normal", "italic"],
-  variable: "--font-serif",
+  variable: "--font-sans",
 });
 
-// Utility — mono for timecodes, track numbers, data (the DJ-set voice)
-const mono = Space_Mono({
+// Spec — monospace, the measurement voice shared across every craft.
+const mono = Geist_Mono({
   subsets: ["latin"],
-  weight: ["400", "700"],
   variable: "--font-mono",
 });
 
 const SITE_URL = "https://vedant-chawla.vercel.app";
-const TITLE = "Vedant Chawla — Product Manager & Music Curator";
+const TITLE = "Vedant Chawla — Product Manager";
 const DESCRIPTION =
-  "Product Manager with 5+ years building enterprise platforms across aviation and technology — and a drummer, DJ, and electronic-music curator. Based in Atlanta, GA.";
+  "A product manager who sweats the 2% — across a drum kit, a codebase, a wardrobe, and a cup of coffee. Owner of $2B+ platforms at Delta. Based in the U.S.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
-  title: {
-    default: TITLE,
-    template: "%s · Vedant Chawla",
-  },
+  title: { default: TITLE, template: "%s · Vedant Chawla" },
   description: DESCRIPTION,
   keywords: [
     "Vedant Chawla",
     "Product Manager",
-    "Atlanta",
-    "aviation",
-    "DJ",
-    "drummer",
-    "music curator",
+    "Technical Product Manager",
+    "percussion",
+    "coffee",
+    "fashion",
     "portfolio",
   ],
   authors: [{ name: "Vedant Chawla", url: SITE_URL }],
@@ -64,11 +53,7 @@ export const metadata: Metadata = {
     description: DESCRIPTION,
     locale: "en_US",
   },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-  },
+  twitter: { card: "summary_large_image", title: TITLE, description: DESCRIPTION },
 };
 
 export default function RootLayout({
@@ -79,7 +64,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geist.variable} ${display.variable} ${serif.variable} ${mono.variable} scroll-smooth`}
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
     >
       <body>{children}</body>
     </html>

@@ -1,31 +1,26 @@
-import Nav from "@/components/Nav";
-import ScrollProgress from "@/components/ScrollProgress";
-import ClickRipple from "@/components/ClickRipple";
-import CountIn from "@/components/CountIn";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Experience from "@/components/Experience";
-import PMPitch from "@/components/PMPitch";
-import Projects from "@/components/Projects";
-import Skills from "@/components/Skills";
-import Music from "@/components/Music";
-import Footer from "@/components/Footer";
+import Nav from "@/components/measured/Nav";
+import TempoRail from "@/components/measured/TempoRail";
+import Hero from "@/components/measured/Hero";
+import CraftPanel from "@/components/measured/CraftPanel";
+import Work from "@/components/measured/Work";
+import Builds from "@/components/measured/Builds";
+import Contact from "@/components/measured/Contact";
+import { crafts } from "@/components/measured/data";
 
 export default function Home() {
   return (
-    <main>
-      <CountIn />
-      <ClickRipple />
+    <>
       <Nav />
-      <ScrollProgress />
-      <Hero />
-      <About />
-      <Experience />
-      <PMPitch />
-      <Projects />
-      <Skills />
-      <Music />
-      <Footer />
-    </main>
+      <TempoRail />
+      <main>
+        <Hero />
+        {crafts.map((c) => (
+          <CraftPanel key={c.key} craft={c} />
+        ))}
+        <Work />
+        <Builds />
+        <Contact />
+      </main>
+    </>
   );
 }
