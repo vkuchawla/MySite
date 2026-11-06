@@ -1,15 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { profile } from "./data";
+import { profile, sections } from "./data";
 
-const LINKS = [
-  { id: "sound", label: "Sound" },
-  { id: "tabla", label: "Tabla" },
-  { id: "feed", label: "Feed" },
-  { id: "work", label: "Work" },
-  { id: "builds", label: "Builds" },
-];
+// Derive the nav from the single source of truth; the brand mark covers "top"
+// and the résumé/contact lives in its own CTA.
+const LINKS = sections.filter((s) => s.id !== "top" && s.id !== "contact");
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
