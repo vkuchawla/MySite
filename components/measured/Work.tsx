@@ -35,13 +35,17 @@ export default function Work() {
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
           <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.3em] text-bone-faint">
-            <span className="text-brass">05</span>
+            <span className="text-brass">04</span>
             <span className="h-px w-10 bg-brass" />
-            Track record · tech specs
+            The day job
           </div>
           <h2 className="mt-6 max-w-2xl font-display display-lg">
-            Five years, shipped.
+            The other half ships product.
           </h2>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-bone-soft sm:text-lg">
+            When I&apos;m not behind the decks, I build products at scale — most
+            recently the engine that prices every ticket at Delta.
+          </p>
         </Reveal>
 
         <div className="mt-14 border-t border-hairline-dark">

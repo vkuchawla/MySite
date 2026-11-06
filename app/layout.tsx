@@ -25,9 +25,9 @@ const mono = Geist_Mono({
 });
 
 const SITE_URL = "https://vedant-chawla.vercel.app";
-const TITLE = "Vedant Chawla — Product Manager";
+const TITLE = "Vedant Chawla — Product Manager & DJ (V.C. Beats)";
 const DESCRIPTION =
-  "A product manager who sweats the 2% — across a drum kit, a codebase, a wardrobe, and a cup of coffee. Owner of $2B+ platforms at Delta. Based in the U.S.";
+  "Product manager by day; producer and live DJ the rest of the time. As V.C. Beats, I make the mixtapes collegiate South Asian dance teams compete to. Based in Atlanta.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -35,11 +35,14 @@ export const metadata: Metadata = {
   description: DESCRIPTION,
   keywords: [
     "Vedant Chawla",
+    "V.C. Beats",
+    "DJ",
+    "producer",
+    "Raas",
+    "Garba",
+    "Bhangra",
+    "Bollywood fusion",
     "Product Manager",
-    "Technical Product Manager",
-    "percussion",
-    "coffee",
-    "fashion",
     "portfolio",
   ],
   authors: [{ name: "Vedant Chawla", url: SITE_URL }],

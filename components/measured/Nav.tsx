@@ -4,11 +4,11 @@ import { useEffect, useState } from "react";
 import { profile } from "./data";
 
 const LINKS = [
-  { id: "percussion", label: "Percussion" },
-  { id: "systems", label: "Systems" },
-  { id: "fashion", label: "Fashion" },
-  { id: "coffee", label: "Coffee" },
+  { id: "sound", label: "Sound" },
+  { id: "tabla", label: "Tabla" },
+  { id: "feed", label: "Feed" },
   { id: "work", label: "Work" },
+  { id: "builds", label: "Builds" },
 ];
 
 export default function Nav() {

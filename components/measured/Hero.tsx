@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, useReducedMotion } from "framer-motion";
-import { profile, crafts } from "./data";
+import { profile } from "./data";
 
 const ease = [0.16, 1, 0.3, 1] as const;
 
@@ -29,37 +29,37 @@ export default function Hero() {
         className="relative z-10 flex items-center gap-3 font-mono text-[11px] uppercase tracking-[0.3em] text-bone-faint"
       >
         <span className="h-px w-8 bg-brass" />
-        Portfolio · {profile.role}
+        {profile.dayRole} · {profile.location}
       </motion.div>
 
-      {/* thesis */}
+      {/* name */}
       <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center py-10">
         <motion.h1
           {...rise(0.12)}
           className="font-display display-xl"
         >
-          <span className="sheen-text">{profile.thesisLead}</span>
+          <span className="sheen-text">{profile.heroLead}</span>
         </motion.h1>
 
         <motion.p
           {...rise(0.3)}
           className="mt-8 max-w-2xl text-lg leading-relaxed text-bone-soft sm:text-xl"
         >
-          {profile.thesisBody}
+          {profile.heroBody}
         </motion.p>
 
-        {/* spec ticker — four crafts, one measurement language */}
+        {/* honest anchors — no invented spec sheet */}
         <motion.ul
           {...rise(0.5)}
-          className="mt-12 grid max-w-3xl grid-cols-2 gap-x-8 gap-y-5 sm:grid-cols-4"
+          className="mt-12 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-5 sm:grid-cols-3"
         >
-          {crafts.map((c) => (
-            <li key={c.key} className="border-t border-hairline-dark pt-3">
+          {profile.heroFacts.map((f) => (
+            <li key={f.k} className="border-t border-hairline-dark pt-3">
               <div className="font-mono text-[10px] uppercase tracking-[0.2em] text-bone-faint">
-                {c.n} · {c.name}
+                {f.k}
               </div>
-              <div className="mt-1 font-display text-2xl text-brass-bright">
-                {c.figure}
+              <div className="mt-1 font-display text-xl text-brass-bright">
+                {f.v}
               </div>
             </li>
           ))}

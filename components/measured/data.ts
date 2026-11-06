@@ -1,113 +1,171 @@
-// Single source of truth for "Measured". Real content; themes present it.
+// Single source of truth for the site. Real content — the components present it.
+// Music-forward: Vedant Chawla, aka V.C. Beats. Product manager by day,
+// producer / DJ the rest of the time.
 
 export const profile = {
   name: "Vedant Chawla",
-  role: "Product Manager",
-  thesisLead: "Measured.",
-  thesisBody:
-    "A product manager who sweats the 2% — on a drum kit, in a codebase, in a wardrobe, and in a cup of coffee.",
-  location: "United States",
+  alias: "V.C. Beats",
+  dayRole: "Product Manager",
+  location: "Atlanta, GA",
+  // personal inbox for product / work
   email: "vkuchawla@gmail.com",
+  // the V.C. Beats booking inbox
+  bookingEmail: "vcbeats98@gmail.com",
   github: "https://github.com/vkuchawla",
   resume: "/Vedant_Chawla_Resume.pdf",
+  // Hero: clean, honest, first-person. Doesn't name the alias yet — that reveal
+  // lands in the Sound section.
+  heroLead: "Vedant Chawla",
+  heroBody:
+    "Product manager by day. I spend most of the rest of my time making music — and building things on the internet that probably didn't need to exist.",
+  // Three honest anchors under the hero, no invented spec sheet.
+  heroFacts: [
+    { k: "Day job", v: "Product Manager" },
+    { k: "After hours", v: "Producer · DJ" },
+    { k: "Based in", v: "Atlanta" },
+  ],
 };
 
-// The four crafts, each rendered in one measurement language.
-export type Craft = {
-  n: string;
+// ============================ The Sound ===================================
+// The heart of the site. Everything here is verifiable from the V.C. Beats
+// profiles. Stats are rounded down so they stay true as they grow.
+export const sound = {
+  eyebrow: "Production",
+  reveal: "Online, I go by V.C. Beats.",
+  headline: "Too many genres to pick one.",
+  body:
+    "So I blend them. Bhangra into hip-hop, Bollywood into house, garba into whatever's knocking that week — fusion mixtapes stitched from every kind of music I love. A lot of it is built for the collegiate South Asian dance circuit (Raas, Garba, Bhangra, India Night), where a set has to move a team and a crowd at once. But really I just like finding the one transition nobody expects and making it land.",
+  // His own SoundCloud tagline.
+  booking: "Available for competition mixtapes and live DJ sets.",
+  // Profile player — shows the real catalog, plays actual tracks.
+  soundcloudEmbed:
+    "https://w.soundcloud.com/player/?url=https%3A%2F%2Fsoundcloud.com%2Fv_c_beats&color=%23b4824a&auto_play=false&hide_related=true&show_comments=false&show_user=true&show_reposts=false&show_teaser=false&visual=false",
+  soundcloudUrl: "https://soundcloud.com/v_c_beats",
+  // Real credits pulled from the catalog.
+  credits: [
+    "ADZ 2024",
+    "BKB 2023",
+    "Raas In The 614",
+    "AKD / DRD 2021",
+    "Midwest Side Story",
+    "Raas Royalty XI",
+    "DTX Dandiya",
+    "UGA India Night",
+  ],
+};
+
+// ============================ Tabla =======================================
+// Hover-to-play showcase of real tabla/dhol clips. Drop web-optimized MP4s
+// (muted, ~6-8s loops) into /public/tabla/ using the `src` filenames below;
+// posters (first-frame .jpg) are optional — generated if absent.
+export const tabla = {
+  eyebrow: "Taal",
+  headline: "I don't just drop the beat — I play it.",
+  body:
+    "Producing and DJing is half of it. The other half is live tabla — real hands layered over the tracks I love, from Arijit ballads to AP Dhillon bangers. A few favorites:",
+  tiktokUrl: "https://www.tiktok.com/@v.c.beats",
+  clips: [
+    {
+      title: "Apna Bana Le",
+      views: "6.9K",
+      src: "/tabla/apna-bana-le.mp4",
+      poster: "/tabla/apna-bana-le.jpg",
+      tiktok: "https://www.tiktok.com/@v.c.beats/video/7231788471843687723",
+    },
+    {
+      title: "Ride with the MOB",
+      views: "2.8K",
+      src: "/tabla/ride-with-the-mob.mp4",
+      poster: "/tabla/ride-with-the-mob.jpg",
+      tiktok: "https://www.tiktok.com/@v.c.beats/video/7220077309213216046",
+    },
+    {
+      title: "Mera Dhol Na Sun",
+      views: "2.6K",
+      src: "/tabla/mera-dhol-na-sun.mp4",
+      poster: "/tabla/mera-dhol-na-sun.jpg",
+      tiktok: "https://www.tiktok.com/@v.c.beats/video/7445763158070938926",
+    },
+    {
+      title: "AP Dhillon — new album",
+      views: "1.7K",
+      src: "/tabla/ap-dhillon.mp4",
+      poster: "/tabla/ap-dhillon.jpg",
+      tiktok: "https://www.tiktok.com/@v.c.beats/video/7410553236752747822",
+    },
+  ],
+};
+
+// ============================ The Feed ====================================
+// Social presence. Stats rounded down. These are the real, confirmed links.
+export type Social = {
   key: string;
   name: string;
-  tone: "dark" | "light";
-  headline: string;
-  body: string;
-  // Parallel to how he builds product.
-  parallel: string;
-  specs: { k: string; v: string }[];
-  // Headline figure shown large.
-  figure: string;
-  figureLabel: string;
+  handle: string;
+  url: string;
+  stat: string;
+  note: string;
+  // Optional: featured items (e.g. top videos) with their metrics.
+  highlights?: { title: string; metric: string; url: string }[];
 };
 
-export const crafts: Craft[] = [
+export const socials: Social[] = [
   {
-    n: "01",
-    key: "percussion",
-    name: "Percussion",
-    tone: "dark",
-    headline: "Rhythm is latency you can feel.",
-    body:
-      "I've played since I was a kid — kit, tabla, pads. Pocket isn't negotiable: a groove and noise are only a few milliseconds apart, held with intent. It taught me that consistency beats intensity.",
-    parallel:
-      "Same reason my release trains ship on the beat, sprint after sprint.",
-    specs: [
-      { k: "Tempo", v: "60–180 BPM" },
-      { k: "Meter", v: "4/4 · 7/8 · 5/4" },
-      { k: "Feel", v: "In the pocket" },
-      { k: "First kit", v: "Age 11" },
-    ],
-    figure: "120",
-    figureLabel: "beats per minute",
+    key: "tiktok",
+    name: "TikTok",
+    handle: "@v.c.beats",
+    url: "https://www.tiktok.com/@v.c.beats",
+    stat: "5.7K followers · 65K+ likes",
+    note: "Behind the decks. Best clips pass 270K views.",
   },
   {
-    n: "02",
-    key: "systems",
-    name: "Systems",
-    tone: "light",
-    headline: "I build the engines people never see.",
-    body:
-      "At Delta I own the valuation engine — the thing that tells every customer what a ticket is really worth, the moment they ask. We moved it from real-time calculation to a pre-computed model: lower latency, higher trust, no operational surprises.",
-    parallel:
-      "Started in cloud infra before product, so I speak engineering and own the trade-offs.",
-    specs: [
-      { k: "Scale", v: "$2B+/yr" },
-      { k: "Reliability", v: "99% UAT" },
-      { k: "Alignment", v: "6+ teams" },
-      { k: "Latency", v: "Real-time → pre-computed" },
-    ],
-    figure: "$2B+",
-    figureLabel: "calculations owned, yearly",
+    key: "soundcloud",
+    name: "SoundCloud",
+    handle: "v_c_beats",
+    url: "https://soundcloud.com/v_c_beats",
+    stat: "2.2K followers · 88 tracks",
+    note: "The full catalog — every mixtape and set.",
   },
   {
-    n: "03",
-    key: "fashion",
-    name: "Fashion",
-    tone: "dark",
-    headline: "Fit is a form of respect.",
-    body:
-      "I minored in apparel merchandising, and I read clothes like a system: proportion, fabric weight, restraint. One considered choice beats ten loud ones. The details you notice last are usually the ones doing the work.",
-    parallel:
-      "It's the same taste I bring to an interface — edit until only what matters is left.",
-    specs: [
-      { k: "Weight", v: "280–340 GSM" },
-      { k: "Denim", v: "14 oz selvedge" },
-      { k: "Break", v: "Quarter" },
-      { k: "Rule", v: "One statement, max" },
-    ],
-    figure: "1",
-    figureLabel: "statement piece, never two",
+    key: "instagram",
+    name: "Instagram",
+    handle: "@vcbeats",
+    url: "https://www.instagram.com/vcbeats/",
+    stat: "Photos · reels · gigs",
+    note: "Where the next set gets announced.",
   },
   {
-    n: "04",
-    key: "coffee",
-    name: "Coffee",
-    tone: "light",
-    headline: "Extraction is just iteration.",
-    body:
-      "Dialing in a pour-over is a tight feedback loop: measure, taste, adjust one variable, repeat. Grind, ratio, temperature, time — change the water by two degrees and the whole cup moves. I chase the same clarity every morning.",
-    parallel:
-      "It's A/B testing you can drink: isolate the variable, trust the data, keep what's better.",
-    specs: [
-      { k: "Ratio", v: "1:16" },
-      { k: "Water", v: "93°C" },
-      { k: "Bloom", v: "30–45s" },
-      { k: "Method", v: "V60 · Espresso" },
+    key: "youtube",
+    name: "YouTube",
+    handle: "@vcbeats-cp8pj",
+    url: "https://youtube.com/@vcbeats-cp8pj",
+    stat: "9K+ subscribers",
+    note: "Fusion mashups — the two biggest:",
+    highlights: [
+      {
+        title: "Loyal × Nainowale Ne × Ride It",
+        metric: "2.2M views",
+        url: "https://youtu.be/Q5azpvidbBA",
+      },
+      {
+        title: "Pyaar Ki Ek Kahani × Brown Munde",
+        metric: "1.3M views",
+        url: "https://youtu.be/cdqwuoYFh7Q",
+      },
     ],
-    figure: "1:16",
-    figureLabel: "coffee to water, dialed in",
+  },
+  {
+    key: "linktree",
+    name: "Everything",
+    handle: "linktr.ee/v.c.beats",
+    url: "https://linktr.ee/v.c.beats",
+    stat: "All links · one place",
+    note: "SoundCloud, TikTok, Instagram, YouTube.",
   },
 ];
 
-// Real career history, as an Apple-style spec sheet.
+// ============================ The Day Job =================================
+// Real career history. Kept credible for recruiters.
 export const work = [
   {
     company: "Delta Air Lines",
@@ -151,15 +209,8 @@ export const work = [
   },
 ];
 
+// ============================ After Hours =================================
 export const builds = [
-  {
-    name: "Career Remix",
-    blurb:
-      "A themeable portfolio engine that reskins a résumé as any company's product. First cut: Spotify.",
-    tags: ["Next.js", "Tailwind", "Theming"],
-    live: "https://vedant-chawla-pm.vercel.app",
-    repo: null,
-  },
   {
     name: "SkyRoutes",
     blurb:
@@ -189,10 +240,9 @@ export const builds = [
 // Drives nav + tempo rail. Order is the scroll order.
 export const sections = [
   { id: "top", label: "Top" },
-  { id: "percussion", label: "Percussion" },
-  { id: "systems", label: "Systems" },
-  { id: "fashion", label: "Fashion" },
-  { id: "coffee", label: "Coffee" },
+  { id: "sound", label: "Production" },
+  { id: "tabla", label: "Taal" },
+  { id: "feed", label: "Feed" },
   { id: "work", label: "Work" },
   { id: "builds", label: "Builds" },
   { id: "contact", label: "Contact" },

@@ -1,16 +1,16 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "Vedant Chawla — Product Manager";
+export const alt = "Vedant Chawla — Product Manager & DJ (V.C. Beats)";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-// Generated OG/social card, matching the site's "Measured" palette.
+// Generated OG/social card, matching the site's warm graphite + brass palette.
 export default function OpengraphImage() {
   const specs = [
-    ["Percussion", "120 BPM"],
-    ["Systems", "$2B+"],
-    ["Fashion", "320 GSM"],
-    ["Coffee", "1:16"],
+    ["Alias", "V.C. Beats"],
+    ["Craft", "Producer · DJ"],
+    ["Day job", "Product Manager"],
+    ["Based", "Atlanta"],
   ];
   return new ImageResponse(
     (
@@ -39,15 +39,15 @@ export default function OpengraphImage() {
           }}
         >
           <span style={{ width: 40, height: 2, background: "#b4824a", display: "flex" }} />
-          <span>Portfolio · Product Manager</span>
+          <span>Portfolio · Product Manager & DJ</span>
         </div>
 
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <div style={{ display: "flex", fontSize: 190, fontWeight: 800, lineHeight: 1, letterSpacing: -6 }}>
-            Measured.
+          <div style={{ display: "flex", fontSize: 150, fontWeight: 800, lineHeight: 1, letterSpacing: -5 }}>
+            Vedant Chawla
           </div>
           <div style={{ display: "flex", fontSize: 38, marginTop: 28, color: "rgba(236,234,228,0.78)" }}>
-            A product manager who sweats the 2%.
+            Product manager by day. V.C. Beats the rest of the time.
           </div>
         </div>
 

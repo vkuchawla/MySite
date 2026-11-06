@@ -10,7 +10,7 @@ export default function Builds() {
       <div className="relative z-10 mx-auto max-w-5xl">
         <Reveal>
           <div className="flex items-center gap-4 font-mono text-[11px] uppercase tracking-[0.3em] text-ink-faint">
-            <span className="text-brass">06</span>
+            <span className="text-brass">05</span>
             <span className="h-px w-10 bg-brass" />
             Side projects
           </div>

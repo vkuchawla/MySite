@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 /* ===========================================================================
-   "MEASURED" — a product manager who sweats the 2%, across four crafts.
-   The design is built like a precision instrument panel: porcelain + warm
-   graphite, a single burnished-brass accent, and a monospace "spec" voice that
-   renders percussion, systems, fashion and coffee in one measurement language.
+   Vedant Chawla / V.C. Beats — product manager by day, producer & DJ the rest
+   of the time. The design reads like a precision instrument panel: porcelain +
+   warm graphite, a single burnished-brass accent, a monospace "spec" voice, and
+   a metronome rail that keeps time as you scroll.
    =========================================================================== */
 @theme inline {
   /* Surfaces */
@@ -64,7 +64,7 @@
 .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.03em; }
 .font-mono { font-family: var(--font-mono); }
 
-/* Monospace spec label — the connective voice across all four crafts. */
+/* Monospace spec label — the connective voice across the whole site. */
 .spec {
   font-family: var(--font-mono);
   font-size: 0.72rem;
