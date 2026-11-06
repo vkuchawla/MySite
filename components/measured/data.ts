@@ -55,8 +55,10 @@ export const sound = {
 };
 
 // ============================ Taal ========================================
-// Showcase of real tabla/dhol clips, embedded straight from TikTok. Each clip
-// renders as a TikTok player iframe keyed off its `tiktok` post URL.
+// Showcase of real tabla/dhol clips. The videos are self-hosted (downloaded
+// from TikTok, compressed to muted ~10s portrait loops in /public/tabla/) so
+// they autoplay inline and can't be blocked; tapping a tile opens the TikTok
+// post. `poster` is the first-frame JPG shown until the video decodes.
 export const tabla = {
   eyebrow: "Taal",
   headline: "I don't just drop the beat — I play it.",
@@ -67,21 +69,29 @@ export const tabla = {
     {
       title: "Apna Bana Le",
       views: "6.9K",
+      src: "/tabla/apna-bana-le.mp4",
+      poster: "/tabla/apna-bana-le.jpg",
       tiktok: "https://www.tiktok.com/@v.c.beats/video/7231788471843687723",
     },
     {
       title: "Ride with the MOB",
       views: "2.8K",
+      src: "/tabla/ride-with-the-mob.mp4",
+      poster: "/tabla/ride-with-the-mob.jpg",
       tiktok: "https://www.tiktok.com/@v.c.beats/video/7220077309213216046",
     },
     {
       title: "Mera Dhol Na Sun",
       views: "2.6K",
+      src: "/tabla/mera-dhol-na-sun.mp4",
+      poster: "/tabla/mera-dhol-na-sun.jpg",
       tiktok: "https://www.tiktok.com/@v.c.beats/video/7445763158070938926",
     },
     {
       title: "AP Dhillon — new album",
       views: "1.7K",
+      src: "/tabla/ap-dhillon.mp4",
+      poster: "/tabla/ap-dhillon.jpg",
       tiktok: "https://www.tiktok.com/@v.c.beats/video/7410553236752747822",
     },
   ],
