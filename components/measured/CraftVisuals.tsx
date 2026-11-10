@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
 /* ============================ Drum sequencer ==============================
@@ -111,6 +111,26 @@ export function PercussionViz() {
   const [soundOn, setSoundOn] = useState(false);
   const engineRef = useRef<Engine | null>(null);
 
+  // the editable grid — a boolean per row per step, seeded from the defaults
+  const defaultPattern = useMemo(
+    () =>
+      ROWS.map((r) => Array.from({ length: STEPS }, (_, i) => r.hits.includes(i))),
+    [],
+  );
+  const [pattern, setPattern] = useState(defaultPattern);
+  // mirror in a ref so the audio loop reads the latest grid without re-firing
+  // the effect (and replaying a step) every time a cell is toggled
+  const patternRef = useRef(pattern);
+  patternRef.current = pattern;
+
+  const toggleCell = (row: number, col: number) =>
+    setPattern((p) =>
+      p.map((r, ri) =>
+        ri === row ? r.map((c, ci) => (ci === col ? !c : c)) : r,
+      ),
+    );
+  const reset = () => setPattern(defaultPattern);
+
   // advance the loop
   useEffect(() => {
     if (reduce) return;
@@ -124,8 +144,8 @@ export function PercussionViz() {
     const e = engineRef.current;
     if (!e) return;
     const t = e.ctx.currentTime;
-    ROWS.forEach((row) => {
-      if (row.hits.includes(step)) VOICES[row.name]?.(e, t);
+    ROWS.forEach((row, ri) => {
+      if (patternRef.current[ri][step]) VOICES[row.name]?.(e, t);
     });
   }, [step, soundOn, reduce]);
 
@@ -192,7 +212,7 @@ export function PercussionViz() {
       </div>
 
       <div className="flex flex-col gap-2.5">
-        {ROWS.map((row) => (
+        {ROWS.map((row, ri) => (
           <div key={row.name} className="flex items-center gap-3">
             <span className="w-12 shrink-0 font-mono text-[9px] tracking-[0.15em] text-bone-faint">
               {row.name}
@@ -202,19 +222,23 @@ export function PercussionViz() {
               style={{ gridTemplateColumns: "repeat(16, minmax(0, 1fr))" }}
             >
               {Array.from({ length: STEPS }).map((_, i) => {
-                const hit = row.hits.includes(i);
+                const hit = pattern[ri][i];
                 const active = !reduce && i === step;
                 return (
-                  <span
+                  <button
                     key={i}
-                    className={`aspect-square rounded-[3px] transition-all duration-100 ${
+                    type="button"
+                    onClick={() => toggleCell(ri, i)}
+                    aria-label={`${row.name} step ${i + 1}, ${hit ? "on" : "off"}`}
+                    aria-pressed={hit}
+                    className={`aspect-square cursor-pointer rounded-[3px] transition-all duration-100 ${
                       hit
                         ? active
                           ? "scale-110 bg-brass-bright shadow-[0_0_10px_rgba(212,166,110,0.8)] ring-2 ring-brass-bright"
-                          : "bg-brass/80"
+                          : "bg-brass/80 hover:bg-brass"
                         : active
                           ? "bg-bone/40 ring-1 ring-bone/30"
-                          : "bg-bone/[0.06]"
+                          : "bg-bone/[0.06] hover:bg-bone/20"
                     }`}
                   />
                 );
@@ -222,6 +246,18 @@ export function PercussionViz() {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* edit affordance */}
+      <div className="mt-4 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.15em] text-bone-faint">
+        <span>Tap cells to build your own</span>
+        <button
+          type="button"
+          onClick={reset}
+          className="rounded-full border border-hairline-dark px-2.5 py-0.5 tracking-[0.15em] transition-colors hover:border-brass/50 hover:text-brass-bright"
+        >
+          ↺ Reset
+        </button>
       </div>
     </div>
   );
