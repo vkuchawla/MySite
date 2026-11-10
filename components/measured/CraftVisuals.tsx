@@ -109,6 +109,7 @@ export function PercussionViz() {
   const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
+  const [bpm, setBpm] = useState(100);
   const engineRef = useRef<Engine | null>(null);
 
   // the editable grid — a boolean per row per step, seeded from the defaults
@@ -131,12 +132,13 @@ export function PercussionViz() {
     );
   const reset = () => setPattern(defaultPattern);
 
-  // advance the loop
+  // advance the loop — 16 steps = 4 beats, so each step is a 16th note
   useEffect(() => {
     if (reduce) return;
-    const id = setInterval(() => setStep((s) => (s + 1) % STEPS), 150);
+    const stepMs = 15000 / bpm; // (60000 / bpm) / 4
+    const id = setInterval(() => setStep((s) => (s + 1) % STEPS), stepMs);
     return () => clearInterval(id);
-  }, [reduce]);
+  }, [reduce, bpm]);
 
   // play the current step's hits when sound is enabled
   useEffect(() => {
@@ -248,8 +250,26 @@ export function PercussionViz() {
         ))}
       </div>
 
+      {/* tempo */}
+      <div className="mt-4 flex items-center gap-3 font-mono text-[9px] uppercase tracking-[0.15em] text-bone-faint">
+        <span className="w-12 shrink-0">Tempo</span>
+        <input
+          type="range"
+          min={60}
+          max={180}
+          step={1}
+          value={bpm}
+          onChange={(e) => setBpm(Number(e.target.value))}
+          aria-label="Tempo in BPM"
+          className="h-1 flex-1 cursor-pointer accent-[#b4824a]"
+        />
+        <span className="w-16 shrink-0 text-right text-brass-bright">
+          {bpm} BPM
+        </span>
+      </div>
+
       {/* edit affordance */}
-      <div className="mt-4 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.15em] text-bone-faint">
+      <div className="mt-3 flex items-center justify-between font-mono text-[9px] uppercase tracking-[0.15em] text-bone-faint">
         <span>Tap cells to build your own</span>
         <button
           type="button"
