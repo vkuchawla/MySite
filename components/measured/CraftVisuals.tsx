@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 
 /* ============================ Drum sequencer ==============================
    A looping 16-step pattern — the signature visual for the Sound section.
-   Reads like a producer's grid: kick, snare, hat, tom. */
+   Reads like a producer's grid: kick, snare, hat, tom. An opt-in Web Audio
+   synth plays the hits in time with the playhead. */
 const ROWS = [
   { name: "KICK", hits: [0, 4, 8, 12] },
   { name: "SNARE", hits: [4, 12] },
@@ -14,20 +15,158 @@ const ROWS = [
 ];
 const STEPS = 16;
 
+/* ---- tiny Web Audio drum synth, built lazily on first user gesture ---- */
+type Engine = { ctx: AudioContext; master: GainNode; noise: AudioBuffer };
+
+function makeEngine(): Engine {
+  const Ctx =
+    window.AudioContext ||
+    (window as unknown as { webkitAudioContext: typeof AudioContext })
+      .webkitAudioContext;
+  const ctx = new Ctx();
+  const master = ctx.createGain();
+  master.gain.value = 0.3;
+  master.connect(ctx.destination);
+  // 1s of white noise, reused by snare + hat
+  const noise = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
+  const data = noise.getChannelData(0);
+  for (let i = 0; i < data.length; i++) data[i] = Math.random() * 2 - 1;
+  return { ctx, master, noise };
+}
+
+function kick({ ctx, master }: Engine, t: number) {
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(150, t);
+  o.frequency.exponentialRampToValueAtTime(45, t + 0.12);
+  g.gain.setValueAtTime(1, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.28);
+  o.connect(g).connect(master);
+  o.start(t);
+  o.stop(t + 0.3);
+}
+
+function snare({ ctx, master, noise }: Engine, t: number) {
+  const src = ctx.createBufferSource();
+  src.buffer = noise;
+  const hp = ctx.createBiquadFilter();
+  hp.type = "highpass";
+  hp.frequency.value = 1200;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.7, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.2);
+  src.connect(hp).connect(g).connect(master);
+  src.start(t);
+  src.stop(t + 0.2);
+  // tonal body
+  const o = ctx.createOscillator();
+  const og = ctx.createGain();
+  o.type = "triangle";
+  o.frequency.setValueAtTime(180, t);
+  og.gain.setValueAtTime(0.4, t);
+  og.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
+  o.connect(og).connect(master);
+  o.start(t);
+  o.stop(t + 0.16);
+}
+
+function hat({ ctx, master, noise }: Engine, t: number) {
+  const src = ctx.createBufferSource();
+  src.buffer = noise;
+  const hp = ctx.createBiquadFilter();
+  hp.type = "highpass";
+  hp.frequency.value = 7000;
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.35, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.05);
+  src.connect(hp).connect(g).connect(master);
+  src.start(t);
+  src.stop(t + 0.06);
+}
+
+function tom({ ctx, master }: Engine, t: number) {
+  const o = ctx.createOscillator();
+  const g = ctx.createGain();
+  o.type = "sine";
+  o.frequency.setValueAtTime(220, t);
+  o.frequency.exponentialRampToValueAtTime(90, t + 0.2);
+  g.gain.setValueAtTime(0.7, t);
+  g.gain.exponentialRampToValueAtTime(0.001, t + 0.3);
+  o.connect(g).connect(master);
+  o.start(t);
+  o.stop(t + 0.32);
+}
+
+const VOICES: Record<string, (e: Engine, t: number) => void> = {
+  KICK: kick,
+  SNARE: snare,
+  HAT: hat,
+  TOM: tom,
+};
+
 export function PercussionViz() {
   const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
+  const [soundOn, setSoundOn] = useState(false);
+  const engineRef = useRef<Engine | null>(null);
+
+  // advance the loop
   useEffect(() => {
     if (reduce) return;
     const id = setInterval(() => setStep((s) => (s + 1) % STEPS), 150);
     return () => clearInterval(id);
   }, [reduce]);
 
+  // play the current step's hits when sound is enabled
+  useEffect(() => {
+    if (!soundOn || reduce) return;
+    const e = engineRef.current;
+    if (!e) return;
+    const t = e.ctx.currentTime;
+    ROWS.forEach((row) => {
+      if (row.hits.includes(step)) VOICES[row.name]?.(e, t);
+    });
+  }, [step, soundOn, reduce]);
+
+  // release the audio context on unmount
+  useEffect(() => () => void engineRef.current?.ctx.close(), []);
+
+  const toggleSound = async () => {
+    if (!engineRef.current) engineRef.current = makeEngine();
+    const { ctx } = engineRef.current;
+    if (soundOn) {
+      setSoundOn(false);
+      await ctx.suspend();
+    } else {
+      await ctx.resume();
+      setSoundOn(true);
+    }
+  };
+
   return (
     <div className="rounded-2xl border border-hairline-dark bg-graphite-soft/60 p-5 backdrop-blur">
       <div className="mb-4 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.2em] text-bone-faint">
         <span>Pattern · 16 steps</span>
-        <span className="text-brass-bright">{String(step + 1).padStart(2, "0")}/16</span>
+        <div className="flex items-center gap-3">
+          {!reduce && (
+            <button
+              type="button"
+              onClick={toggleSound}
+              aria-pressed={soundOn}
+              className={`rounded-full border px-2.5 py-0.5 font-mono text-[9px] uppercase tracking-[0.15em] transition-colors ${
+                soundOn
+                  ? "border-brass bg-brass/10 text-brass-bright"
+                  : "border-hairline-dark text-bone-faint hover:border-brass/50 hover:text-brass-bright"
+              }`}
+            >
+              {soundOn ? "♪ Sound on" : "▶ Hear it"}
+            </button>
+          )}
+          <span className="text-brass-bright">
+            {String(step + 1).padStart(2, "0")}/16
+          </span>
+        </div>
       </div>
 
       {/* playhead tick row — a bright dot sweeps across so the loop is obvious */}
