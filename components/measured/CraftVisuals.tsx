@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useReducedMotion } from "framer-motion";
+import { setBpm, useBpm } from "./tempo";
 
 /* ============================ Drum sequencer ==============================
    A looping 16-step pattern — the signature visual for the Sound section.
@@ -109,7 +110,7 @@ export function PercussionViz() {
   const reduce = useReducedMotion();
   const [step, setStep] = useState(0);
   const [soundOn, setSoundOn] = useState(false);
-  const [bpm, setBpm] = useState(100);
+  const bpm = useBpm();
   const engineRef = useRef<Engine | null>(null);
 
   // the editable grid — a boolean per row per step, seeded from the defaults

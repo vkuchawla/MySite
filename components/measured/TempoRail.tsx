@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { sections } from "./data";
+import { useBpm } from "./tempo";
 
 /** The signature: a right-edge metronome rail. A tick per section, a brass
  *  playhead that slides to the active one and pulses on the beat, plus a live
@@ -11,6 +12,7 @@ export default function TempoRail() {
   const [progress, setProgress] = useState(0);
   const beat = useRef(0);
   const [, force] = useState(0);
+  const bpm = useBpm();
 
   // Track which section is centered + overall scroll progress.
   useEffect(() => {
@@ -36,16 +38,17 @@ export default function TempoRail() {
     };
   }, []);
 
-  // A quiet metronome tick for the readout (visual only).
+  // A quiet metronome tick, matched to the sequencer's tempo (one beat =
+  // 60000/bpm ms).
   useEffect(() => {
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (reduce) return;
     const id = setInterval(() => {
       beat.current = (beat.current % 4) + 1;
       force((n) => n + 1);
-    }, 500);
+    }, 60000 / bpm);
     return () => clearInterval(id);
-  }, []);
+  }, [bpm]);
 
   const jump = (id: string) =>
     document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
@@ -57,7 +60,7 @@ export default function TempoRail() {
     >
       {/* readout */}
       <div className="pointer-events-none mb-4 text-right font-mono text-[10px] leading-tight text-bone-faint mix-blend-difference">
-        <div className="tracking-[0.2em] text-brass-bright">120 BPM</div>
+        <div className="tracking-[0.2em] text-brass-bright">{bpm} BPM</div>
         <div className="tabular-nums">{String(Math.round(progress * 100)).padStart(3, "0")}%</div>
       </div>
 
@@ -79,7 +82,10 @@ export default function TempoRail() {
               }`}
             />
             {i === active && (
-              <span className="tempo-pulse absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-brass-bright" />
+              <span
+                className="tempo-pulse absolute left-1/2 top-1/2 h-3 w-3 -translate-x-1/2 -translate-y-1/2 rounded-full border border-brass-bright"
+                style={{ animationDuration: `${60000 / bpm}ms` }}
+              />
             )}
             <span className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 whitespace-nowrap font-mono text-[10px] uppercase tracking-[0.2em] text-bone-faint opacity-0 mix-blend-difference transition-opacity group-hover:opacity-100">
               {s.label}
